@@ -1,8 +1,12 @@
 carousel.local.json
+carousel-brief.local.md
+*.local.json
+*.local.md
 runs/
+work/
+private/
 .env
 .env.*
 !.env.example
 .DS_Store
 __pycache__/
-work/
