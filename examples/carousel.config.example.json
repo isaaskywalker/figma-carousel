@@ -1,57 +1,81 @@
 {
+  "intake_file": "carousel-brief.local.md",
   "file_key": null,
   "page_id": null,
   "output_page_id": null,
+  "content": {
+    "topic": null,
+    "audience": null,
+    "language": null,
+    "tone": null,
+    "slide_count": null,
+    "structure": null
+  },
   "templates": {
     "cover": {
-      "name": "[Template] Cover",
+      "name": null,
       "id": null
     },
-    "body": [
-      {
-        "name": "[Template] Context1",
-        "id": null
-      }
-    ],
+    "body": [],
     "end": {
-      "name": "[Template] End",
+      "name": null,
       "id": null
     }
   },
-  "image_layer_name": "image",
+  "image_layer_name": null,
   "layer_names": {
     "cover_title": null,
     "body_title": null,
     "body": null
   },
   "typography": {
-    "font_policy": "preserve_template",
+    "policy": null,
     "cover_title": {
       "font_family": null,
       "font_style": null,
+      "font_size": null,
       "min_font_size": null,
-      "max_lines": 2,
-      "exact_lines": true
+      "line_rule": null,
+      "line_count": null
     },
     "body_title": {
       "font_family": null,
       "font_style": null,
+      "font_size": null,
       "min_font_size": null,
-      "max_lines": 1
+      "line_rule": null,
+      "line_count": null
     },
     "body": {
       "font_family": null,
       "font_style": null,
-      "emphasis_style": null,
+      "font_size": null,
       "min_font_size": null,
-      "max_lines": 5
+      "line_rule": null,
+      "line_count": null,
+      "emphasis_style": null
     },
-    "other_text_policy": "preserve_template"
+    "other_text_policy": null
   },
   "layout": {
-    "preserve_template_geometry": true,
-    "body_fixed_width": true
+    "policy": null,
+    "specification": null
+  },
+  "effects": {
+    "shadows": null,
+    "gradients": null,
+    "blur": null,
+    "overlays_and_other": null,
+    "custom_specification": null
+  },
+  "images": {
+    "use_images": null,
+    "type": null,
+    "allowed_sources": null,
+    "missing_slot_policy": null
   },
   "account_handle": null,
-  "attribution_policy": "preserve"
+  "attribution_policy": null,
+  "source_policy": null,
+  "delivery": null
 }
