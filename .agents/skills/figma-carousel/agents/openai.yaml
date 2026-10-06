@@ -1,4 +1,4 @@
 interface:
   display_name: "Figma Carousel"
-  short_description: "Create Korean carousels from your Figma templates"
-  default_prompt: "Use $figma-carousel to create a carousel using my configured Figma templates and fonts."
+  short_description: "Create carousels from a completed user intake form"
+  default_prompt: "Use $figma-carousel and show me the required intake form before starting production."
