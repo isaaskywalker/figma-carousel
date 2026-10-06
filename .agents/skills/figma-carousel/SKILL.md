@@ -1,63 +1,52 @@
 ---
 name: figma-carousel
-description: Create and revise Korean carousels by duplicating the user's Figma templates, applying configurable fonts and relevant photos, validating rendered layout, and retaining slide IDs for targeted edits. Use for template-based carousel requests.
+description: Create or revise carousels from a completed user intake form and the user's own Figma templates, with photos, visual validation and recorded slide IDs. Use for template-based carousel requests.
 ---
 
 # Figma Carousel
 
-Use connected Figma tools to create editable copies of the user's templates. This skill does not supply credentials, a connector, a scheduler, or social publishing.
+## Required intake before production
 
-## Resolve configuration
+Before drafting copy, cloning or editing a template, read [intake-form.md](references/intake-form.md) and ask the user to complete it. Accept a completed `carousel-brief.local.md` or explicit answers in the conversation. Reuse an existing completed form for that run; ask only for missing or changed fields. Do not proceed with production while required fields remain unresolved. Read-only template inspection is allowed when the user requests help identifying their own values.
 
-Read `carousel.local.json` from the user's project, not the installed skill folder. Resolve missing values from the conversation and inspect the live Figma file. Ask only for required ambiguous inputs. Explicit user instructions override configuration, which overrides the defaults below.
+There are no default audience, language, tone, slide count, narrative structure, line limits, font family, font size, frame geometry, or visual effects. Never fill missing values from another user, a previous company template, a test example, or unpublished project history. An explicit choice to use the user's own template values counts as an answer; inspect those values for this run only. Do not interpret a blank or null as consent to preserve or remove effects.
 
-- `file_key`, `page_id`: target source file/page.
-- `templates.cover`, `templates.body[]`, `templates.end`: source frame name and optional ID. Names are arbitrary; `[Template] Cover`, `Context1`–`Context4`, and `End` are examples only. One body master can be cloned for several slides. Verify IDs belong to the intended source page. If names are duplicated, resolve the correct frame before writing.
-- `output_page_id`: optional destination. If absent, create a clearly named output page or isolated section.
-- `image_layer_name`: exact photo slot name, default `image`.
-- `layer_names`: optional `cover_title`, `body_title`, and `body` discovery hints. Null means infer from hierarchy and inspect; do not guess between ambiguous candidates.
-- `typography.font_policy`: `preserve_template`. Each role (`cover_title`, `body_title`, `body`) may override `font_family`, `font_style`, `min_font_size`, and `max_lines`. `cover_title.exact_lines` defaults to true. `body.emphasis_style` may specify the new emphasis weight. Null font/style preserves the original runs; null minimum uses the original size as the lower bound. Preserve other labels and mixed styles unless explicitly overridden.
-- `layout.body_fixed_width`: true by default. Read actual geometry from the template; do not impose another template's dimensions.
-- `account_handle` and attribution are distinct; preserve existing credits unless instructed otherwise.
+Ask for explicit treatment of shadows, gradients, blur, overlays and other effects: preserve the user's template, remove from output copies, or apply user-supplied specifications. Preserve masters in every case. Only remove effects on copies when the user has chosen removal. Do not remove effects from an original file as part of sanitizing this skill package.
 
-Validate positive sizes and line limits before mutation. Defaults without configuration: cover exactly 2 rendered lines, body title at most 1, body at most 5. Preserve existing fonts and use existing sizes as minima. No particular font, template name, frame size or account is required.
+## Configuration
 
-## Editorial rules
+Read optional `carousel.local.json` from the user's project, not the installed skill directory. The completed intake governs this run; clarify conflicts with saved configuration. Blank configuration fields are unresolved, not defaults.
 
-Default audience: Korean women in their 20s and 30s who are jobseekers or working professionals. Use polite Korean with a friendly, professional tone; avoid stereotypes. Default six-slide structure: hook cover → problem → two information slides → practical action → call to action. Respect a different audience, structure, or slide count specified by the user.
+Resolve the source file/page, named source frames or IDs, destination, text roles and photo slots from the form. Names are arbitrary and IDs must be verified against the live file. A body master may be reused if the requested structure permits. If a name maps to several frames or layers, resolve the ambiguity before mutation.
 
-Shorten overflowing copy before reducing size; never go below the configured minimum. Maximum line count does not guarantee text fits its box. Preserve essential meaning, redistributing copy if needed. Verify numerical/current claims with reliable primary sources; record the source separately, omit unsupported claims, and do not manufacture evidence.
+For each text role, use the user-selected font family/style, size/minimum, line limit and exact/maximum rule, or their explicitly selected template values. Preserve unrelated labels only according to the form. Keep account identity and template attribution distinct. For layouts and effects, apply only the chosen policy and values. Do not publish measurements or effects obtained from a private template.
 
-## Figma and fonts
+## Connection and fonts
 
-Discover current read/write tools. Load the integration's `figma-use` instructions before calling `use_figma` and obey its API contract. For inspection/planning, stay read-only. For creation, use supported copy/paste or native cloning and edit only copies. Never rebuild or overwrite masters.
+Discover the available Figma tools and read current integration instructions before calling them. In particular, load `figma-use` guidance before `use_figma`. This skill does not supply a connector, credentials, scheduling or social publishing.
 
-Inspect all existing text-run fonts and load them before operations on text-containing nodes. Verify configured replacement family/style names against available fonts, then load them before replacement. A locally installed font may be missing remotely. Figma supports personal uploads under account Settings → Account → Your uploaded fonts; follow current official guidance and applicable confirmations. Use licensed files or official distributions, then verify remote loading succeeds. Do not silently substitute another family. If unavailable, preserve the draft and explain the missing font.
+Inspect and load all current text-run fonts before operations on text-containing nodes. Verify and load configured replacement styles before applying them. Local font installation does not guarantee remote availability. When a required font is missing, follow current official Figma instructions for personal font upload using licensed files and applicable confirmations, then check remote loading again. Never silently substitute another font.
 
-## Build and recover
+## Production after intake completion
 
-1. Inspect source frames, text roles/runs, image layers, geometry, overlays and stacking. Do not confuse reference examples with masters.
-2. Draft slide titles, body, emphasis phrases and photo briefs. Resolve fonts before beginning mutation.
-3. Create `runs/<run-id>/manifest.json` with draft status. Clone masters into the destination and immediately save every returned frame/descendant ID before further edits. On ambiguous failure, inspect the canvas and reconcile recorded IDs before retrying, avoiding duplicate copies.
-4. Map source-to-copy nodes by hierarchy and roles. Replace copy text only after font loading; apply emphasis to new text ranges rather than reusing old offsets. Keep body width fixed and preserve template geometry.
-5. Insert relevant photos in the configured copied photo slots. Preserve gradients, clipping and profile images. If a cover lacks a slot, resolve whether/where to add one from user intent; do not silently modify its structure.
-6. Inspect every slide screenshot at readable size, plus actual font sizes and dimensions. Verify rendered line counts, no clipping/overlap/missing glyphs, image crops and text contrast. Newline count alone is not evidence of rendered lines. Shorten and recheck affected slides; after three failed repair passes, preserve the draft and report the issue.
-7. Save records and deliver Figma links, previews when available, and precise incomplete items. Do not claim unobserved exports, image insertion or checks succeeded.
+1. Verify the user's source frames, text roles, photo slots, hierarchy, geometry and effects against the completed form.
+2. Draft the requested slide structure, titles, body, emphasis and photo briefs. Verify numerical/current claims against reliable primary sources and record sources separately; omit unsupported claims.
+3. Create a private local run record with draft status. Clone source frames using supported copy/paste or native cloning into a clear destination. Edit only copies. Save every returned output frame/descendant ID immediately after successful batches. After ambiguous failures, inspect the destination and reconcile records before retrying.
+4. Replace text after font loading. Style emphasis using the new text ranges. Apply the user's layout and effects policies. Shorten overflowing copy first and respect the user's minimum size and rendered line constraints.
+5. Apply photos through the connector's documented insertion route to the configured copied slots. Preserve profile images and unrelated content. Resolve a missing photo slot with the user's form rather than assuming a new layout.
+6. Inspect every slide screenshot at readable resolution and check actual sizes and bounds against the completed form. Verify rendered line counts, clipping, overlap, glyphs, crops, contrast and effects. Newline count alone does not establish rendered lines. After three unsuccessful repair passes, preserve the draft and report unresolved issues.
+7. Deliver verified Figma output links and private run records. Report incomplete portions accurately; do not claim unobserved insertion, export or validation.
 
 ## Photos
 
-Use relevant real photographs unless the user requests generated artwork. Prefer user-provided assets or reusable stock with checked terms. Save source page, creator, usage basis and required credits; image search alone does not establish permission.
+Follow the user's selected source and image type. For external photos, verify usage terms and record source page, creator and required credit. Search results alone do not establish permission. Do not send private source materials to third parties or publish them without authorization.
 
-Use only the connector's documented insertion route. Do not invent `createImageAsync`, fetch or encoded-data support. When `upload_assets` exists, pass copied image node IDs in upload order and the destination page ID. POST every one-use URL as documented before requesting more URLs. Use batch commit only if its commit URL can be called exactly once. Verify placement IDs. Never retain upload URLs or credentials in public records.
+Do not invent unsupported Figma image methods. If `upload_assets` is available, pass copied photo node IDs in order and the destination page ID, POST every one-use URL as documented before requesting more URLs, and verify placement IDs. Use batch commit only when its commit URL can be called exactly once. Never publish or retain short-lived upload URLs in shared records. If insertion is unsupported, mark photos pending and report the limitation.
 
-If photo insertion is unsupported, continue independent copy work, save selected photo sources/briefs, mark photos pending and explain the limitation. Do not substitute blank rectangles or claim completion.
+## Private records and revisions
 
-## Run records and partial revisions
+Store the completed form, actual configuration and `runs/<run-id>/` outside the installed skill. Update the manifest after successful mutation batches. Do not commit private forms, template data, metrics, screenshots, effects, fonts, photos or records to this repository.
 
-Keep records outside the installed skill at `runs/<run-id>/`; update after successful mutation batches, using an atomic file replacement when feasible. Never publish private records or credentials.
+The manifest records run ID/topic/time, source and destination IDs, status (`draft`, `partial`, `complete`), user-selected rules, ordered slides, output URLs and layer IDs, copy, photo status, validation evidence and unresolved items. Unknown checks remain unknown. Keep claim and photo sources in a separate `sources.json`, associated with slide numbers and verification dates.
 
-Manifest: `schema_version`, `run_id`, `topic`, timezone-aware timestamps, source file/page, destination page/section, status (`draft`, `partial`, `complete`), applied rules, ordered slides and validation. Each slide stores number, role, source frame ID, output frame ID/URL, copied layer IDs by role, created IDs, copy, photo status and validation. Record observed sizes/line counts and unresolved issues; unknown checks remain unknown.
-
-Sources: separate `claims` and `photos` arrays, each with slide number. Claims include claim text, source URL/publisher, publication/event date if known and verification date. Photos include source page, creator, usage basis, required credit and durable local asset path if available.
-
-For targeted revision, verify recorded output IDs still exist and modify only requested slides. If stale, rediscover inside that run's destination, never fall back to masters. Update records and recheck only affected slides. A template-rule change does not authorize rewriting all prior outputs.
+For partial revision, reuse the completed run form and verify saved output IDs. Modify only the requested slides, update records and recheck affected outputs. If IDs are stale, rediscover inside that run's destination; never edit masters as a fallback.
