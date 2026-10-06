@@ -1,0 +1,57 @@
+{
+  "file_key": null,
+  "page_id": null,
+  "output_page_id": null,
+  "templates": {
+    "cover": {
+      "name": "[Template] Cover",
+      "id": null
+    },
+    "body": [
+      {
+        "name": "[Template] Context1",
+        "id": null
+      }
+    ],
+    "end": {
+      "name": "[Template] End",
+      "id": null
+    }
+  },
+  "image_layer_name": "image",
+  "layer_names": {
+    "cover_title": null,
+    "body_title": null,
+    "body": null
+  },
+  "typography": {
+    "font_policy": "preserve_template",
+    "cover_title": {
+      "font_family": null,
+      "font_style": null,
+      "min_font_size": null,
+      "max_lines": 2,
+      "exact_lines": true
+    },
+    "body_title": {
+      "font_family": null,
+      "font_style": null,
+      "min_font_size": null,
+      "max_lines": 1
+    },
+    "body": {
+      "font_family": null,
+      "font_style": null,
+      "emphasis_style": null,
+      "min_font_size": null,
+      "max_lines": 5
+    },
+    "other_text_policy": "preserve_template"
+  },
+  "layout": {
+    "preserve_template_geometry": true,
+    "body_fixed_width": true
+  },
+  "account_handle": null,
+  "attribution_policy": "preserve"
+}
